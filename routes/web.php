@@ -1,18 +1,29 @@
 <?php
 
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-<<<<<<< HEAD
-
-Route::get('/', function () {
-    return ['Laravel' => app()->version()];
-});
-
-require __DIR__.'/auth.php';
-=======
-use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('welcome');
 });
-Route::resource('users', UserController::class);
->>>>>>> 4a09523850cfeebdfa692b54279caaa0c7c1689b
+// Route::post('login', [AuthController::class, 'login']);
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::get('/web-login', function () {
+    return view('auth.login');
+});
+
+Route::post('/web-login', [AdminAuthController::class, 'webLogin'])
+
+    ->name('web.login');require __DIR__.'/auth.php';

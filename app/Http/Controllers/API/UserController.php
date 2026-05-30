@@ -28,7 +28,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-<<<<<<< HEAD
         // dd($request->all());
         $user = User::create([
             'name'     => $request->name,
@@ -41,24 +40,6 @@ class UserController extends Controller
         return response()->json([
             'message' => 'User created successfully',
             'user' => $user
-=======
-        $user = User::create([
-
-            'name' => $request->name,
-
-            'email' => $request->email,
-
-            'role' => $request->role,
-
-            'password' => Hash::make($request->password),
-
-        ]);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'User Created Successfully',
-            'data' => $user
->>>>>>> 4a09523850cfeebdfa692b54279caaa0c7c1689b
         ]);
     }
 
@@ -137,8 +118,4 @@ class UserController extends Controller
             'message' => 'User Deleted Successfully'
         ]);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 4a09523850cfeebdfa692b54279caaa0c7c1689b

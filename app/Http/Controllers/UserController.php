@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-            // dd(auth()->user());
+        // dd(auth()->user());
 
         $users = User::latest()->get();
         // dd('ok');
