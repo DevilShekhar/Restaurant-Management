@@ -27,7 +27,10 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+<<<<<<< HEAD
         // dd($request->all());
+=======
+>>>>>>> 4a09523850cfeebdfa692b54279caaa0c7c1689b
         $credentials = $request->only('email', 'password');
 
         if (!$token = auth()->attempt($credentials)) {
@@ -67,4 +70,8 @@ class AuthController extends Controller
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4a09523850cfeebdfa692b54279caaa0c7c1689b

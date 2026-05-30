@@ -21,8 +21,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+<<<<<<< HEAD
         $this->call([
             PermissionSeeder::class
         ]);
+=======
+>>>>>>> 4a09523850cfeebdfa692b54279caaa0c7c1689b
     }
 }
