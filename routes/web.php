@@ -1,32 +1,22 @@
 <?php
 
-use App\Http\Controllers\Admin\AuthController as AdminAuthController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AuthController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-// Route::post('login', [AuthController::class, 'login']);
-
-Route::get('/dashboard', function () {
-
-    return view('dashboard');
-})->name('dashboard')->middleware('auth:web');
-
-// Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
-
-Route::get('/web-login', function () {
+Route::get('/login', function () {
     return view('auth.login');
-});
+})->name('web.login.form');
 
-Route::post('/web-login', [AdminAuthController::class, 'webLogin'])
-
+Route::post('/login', [AuthController::class, 'webLogin'])
     ->name('web.login');
-require __DIR__ . '/auth.php';
+
+Route::middleware('jwt.session')->group(function () {
+
+    Route::get('/dashboard', [AuthController::class, 'dashboard'])
+        ->name('dashboard');
+
+    Route::post('/logout', [AuthController::class, 'logout'])
+        ->name('logout');
+
+    // add all protected routes here
+});

@@ -78,19 +78,13 @@ class PermissionSeeder extends Seeder
             'view-kitchen',
             'manage-kitchen',
 
-            'create-inventory',   //create-stock
-            'view-inventory',    //view-stock
-            'edit-inventory',   //edit-stock
-            'delete-inventory', //delete-stock
+            'create-inventory',   
+            'view-inventory',    
+            'edit-inventory',  
+            'delete-inventory', 
 
             'request-stock',
-            'approve-stock-request',
-
-            // 'create-supplier',
-            // 'view-supplier',
-            // 'edit-supplier',
-            // 'delete-supplier',
-
+            'approve-stock-request',           
             'generate-bill',
             'view-bill',
             'edit-bill',
