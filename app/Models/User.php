@@ -2,30 +2,32 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
-
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasRoles;
 
     protected $fillable = [
         'name',
         'email',
+        'phone',
+        'gender',
+        'profile_photo',
+        'birth_date',
+        'address',
+        'role',
+        'branch_id',
+        'status',
         'password',
-        'branch_id'
+        'created_by',
+        'updated_by'
     ];
 
     protected $hidden = [
         'password',
         'remember_token'
-    ];
-
-    protected $casts = [
-        'password' => 'hashed'
     ];
 
     public function getJWTIdentifier()

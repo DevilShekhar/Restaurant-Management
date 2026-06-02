@@ -1,81 +1,231 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>User List</title>
+@extends('layouts.app')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+@section('content')
 
-<div class="container mt-5">
+<section class="section premium-dashboard">
+    <div class="premium-page-head">
+        <div class="premium-page-title">
+            <span class="mini-badge">
+                User Management
+            </span>
 
-    <h2>User List</h2>
+            <h2>User List</h2>
 
-    <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">
-        Add User
-    </a>
-
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
+            <p>
+                Manage all users from API server
+            </p>
         </div>
-    @endif
 
-    <table class="table table-bordered">
+        <div class="premium-head-actions">
+            <a href="{{ route('users.create') }}" class="btn premium-btn btn-main-premium">
+                <i class="fas fa-plus"></i>
+                Add User
+            </a>
+        </div>
+    </div>
+</section>
 
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th width="200">Action</th>
-            </tr>
-        </thead>
+<section class="section premium-dashboard pt-0">
+    <div class="section-body">
 
-        <tbody>
+        <div class="row">
+            <div class="col-12">
 
-            @foreach($users as $user)
+                <div class="card premium-block">
 
-            <tr>
-                <td>{{ $user->id }}</td>
+                    <div class="card-header premium-card-header">
+                        <div>
+                            <h4 class="mb-1">All Users</h4>
+                            <p class="header-subtext mb-0">
+                                User records from API
+                            </p>
+                        </div>
+                    </div>
 
-                <td>{{ $user->name }}</td>
+                    <div class="card-body">
 
-                <td>{{ $user->email }}</td>
+                        <div class="table-responsive">
 
-                <td>{{ $user->role }}</td>
+                            <table class="table table-striped table-hover">
 
-                <td>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Profile</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th width="220">Action</th>
+                                    </tr>
+                                </thead>
 
-                    <a href="{{ route('users.edit', $user->id) }}"
-                       class="btn btn-warning btn-sm">
-                        Edit
-                    </a>
+                                <tbody>
 
-                    <form action="{{ route('users.destroy', $user->id) }}"
-                          method="POST"
-                          style="display:inline-block">
+                                    @forelse($users as $user)
 
-                        @csrf
-                        @method('DELETE')
+                                        <tr>
 
-                        <button class="btn btn-danger btn-sm">
-                            Delete
-                        </button>
+                                            <td>
+                                                {{ $loop->iteration }}
+                                            </td>
 
-                    </form>
+                                            <td>
+                                                @if(!empty($user['profile_photo']))
+                                                    <img
+                                                        src="{{ asset('storage/'.$user['profile_photo']) }}"
+                                                        width="45"
+                                                        height="45"
+                                                        style="border-radius:50%;object-fit:cover;"
+                                                    >
+                                                @else
+                                                    <img
+                                                        src="https://ui-avatars.com/api/?name={{ urlencode($user['name']) }}"
+                                                        width="45"
+                                                        height="45"
+                                                        style="border-radius:50%;"
+                                                    >
+                                                @endif
+                                            </td>
 
-                </td>
-            </tr>
+                                            <td>
+                                                <strong>{{ $user['name'] }}</strong>
+                                            </td>
 
-            @endforeach
+                                            <td>
+                                                {{ $user['email'] }}
+                                            </td>
 
-        </tbody>
+                                            <td>
+                                                {{ $user['phone'] ?? '-' }}
+                                            </td>
 
-    </table>
+                                            <td>
+                                                <span class="badge badge-primary">
+                                                    {{ ucwords(str_replace('_',' ', $user['role'] ?? 'No Role')) }}
+                                                </span>
+                                            </td>
 
-</div>
+                                            <td>
 
-</body>
-</html>
+                                                @if(($user['status'] ?? '') == 'active')
+                                                    <span class="badge badge-success">
+                                                        Active
+                                                    </span>
+                                                @else
+                                                    <span class="badge badge-danger">
+                                                        Inactive
+                                                    </span>
+                                                @endif
+
+                                            </td>
+
+                                            <td>
+
+                                                <div class="d-flex">
+
+                                                    <a href="{{ route('users.edit',$user['id']) }}"
+                                                        class="btn btn-sm btn-primary mr-2">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+
+                                                    <form action="{{ route('users.destroy',$user['id']) }}"
+                                                        method="POST"
+                                                        class="delete-form">
+
+                                                        @csrf
+                                                        @method('DELETE')
+
+                                                        <button type="submit"
+                                                            class="btn btn-sm btn-danger">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+
+                                                    </form>
+
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+
+                                    @empty
+
+                                        <tr>
+                                            <td colspan="8" class="text-center">
+                                                No Users Found
+                                            </td>
+                                        </tr>
+
+                                    @endforelse
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+@push('scripts')
+
+@if(session('success'))
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Success',
+    text: '{{ session("success") }}',
+    timer: 2000,
+    showConfirmButton: false
+});
+</script>
+@endif
+
+@if(session('error'))
+<script>
+Swal.fire({
+    icon: 'error',
+    title: 'Error',
+    text: '{{ session("error") }}'
+});
+</script>
+@endif
+
+<script>
+document.querySelectorAll('.delete-form').forEach(form => {
+
+    form.addEventListener('submit', function(e) {
+
+        e.preventDefault();
+
+        Swal.fire({
+            title: 'Delete User?',
+            text: 'This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes Delete',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+
+            if(result.isConfirmed){
+                form.submit();
+            }
+
+        });
+
+    });
+
+});
+</script>
+
+@endpush
+
+@endsection
