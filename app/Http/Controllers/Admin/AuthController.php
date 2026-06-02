@@ -14,35 +14,36 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        if (!$token = auth()->attempt($credentials)) {
+        if (!$token = auth('api')->attempt($credentials)) {
             return back()->with('error', 'Invalid Email or Password');
         }
 
         session([
             'jwt_token' => $token,
-            'user' => auth()->user()
+            'user' => auth('api')->user()
         ]);
 
         return redirect()->route('dashboard');
     }
 
-    public function dashboard()
-    {
-        return view('dashboard');
-    }
+        public function dashboard()
+        {
+            return view('dashboard');
+        }
 
-    public function logout()
+        public function logout()
     {
         try {
             if (session()->has('jwt_token')) {
-                auth()->setToken(session('jwt_token'))->logout();
+                auth('api')
+                    ->setToken(session('jwt_token'))
+                    ->logout();
             }
         } catch (\Exception $e) {
-            // optional: log error
         }
 
         session()->flush();
 
-        return redirect()->route('web.login.form');
+        return redirect()->route('login');
     }
 }

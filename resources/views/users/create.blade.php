@@ -1,71 +1,260 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Create User</title>
+@extends('layouts.app')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+@section('content')
 
-<div class="container mt-5">
+<section class="section premium-dashboard">
+    <div class="premium-page-head">
+        <div class="premium-page-title">
+            <span class="mini-badge">User Management</span>
+            <h2>Create User</h2>
+            <p>Add a new user account to the system.</p>
+        </div>
 
-    <h2>Create User</h2>
+        <div class="premium-head-actions">
+            <a href="{{ route('users.index') }}"
+               class="btn premium-btn ghost-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back To Users
+            </a>
+        </div>
+    </div>
+</section>
 
-    <form action="{{ route('users.store') }}" method="POST">
+<section class="section premium-dashboard pt-0">
+
+    <form action="{{ route('users.store') }}"
+          method="POST"
+          enctype="multipart/form-data">
 
         @csrf
 
-        <div class="mb-3">
-            <label>Name</label>
+        <div class="row">
 
-            <input type="text"
-                   name="name"
-                   class="form-control">
+            <div class="col-lg-8">
+
+                <div class="card premium-block">
+
+                    <div class="card-header premium-card-header">
+                        <div>
+                            <h4>User Information</h4>
+                            <p class="header-subtext">
+                                Enter user account details.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-4">
+                                <label>Full Name</label>
+
+                                <input type="text"
+                                       name="name"
+                                       value="{{ old('name') }}"
+                                       class="form-control premium-input">
+
+                                @error('name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label>Email Address</label>
+
+                                <input type="email"
+                                       name="email"
+                                       value="{{ old('email') }}"
+                                       class="form-control premium-input">
+
+                                @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label>Password</label>
+
+                                <input type="password"
+                                    name="password"
+                                    class="form-control premium-input">
+
+                                @error('password')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label>Confirm Password</label>
+
+                                <input type="password"
+                                    name="password_confirmation"
+                                    class="form-control premium-input">
+
+                                @error('password_confirmation')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label>Phone Number</label>
+
+                                <input type="text"
+                                       name="phone"
+                                       value="{{ old('phone') }}"
+                                       class="form-control premium-input">
+
+                                @error('phone')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label>Gender</label>
+
+                                <select name="gender"
+                                        class="form-control premium-input">
+
+                                    <option value="">Select Gender</option>
+
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+
+                                </select>
+
+                                @error('gender')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label>Birth Date</label>
+
+                                <input type="date"
+                                       name="birth_date"
+                                       value="{{ old('birth_date') }}"
+                                       class="form-control premium-input">
+
+                                @error('birth_date')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label>Status</label>
+
+                                <select name="status"
+                                        class="form-control premium-input">
+
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+
+                                </select>
+
+                                @error('status')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <label>Role</label>
+
+                                <select name="role" class="form-control premium-input">
+
+                                    <option value="">Select Role</option>
+
+                                    @foreach($roles as $role)
+                                        <option value="{{ $role }}"
+                                            {{ old('role') == $role ? 'selected' : '' }}>
+                                            {{ ucwords(str_replace('_', ' ', $role)) }}
+                                        </option>
+                                    @endforeach
+
+                                </select>
+
+                                @error('role')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-12 mb-4">
+                                <label>Address</label>
+
+                                <textarea name="address"
+                                          rows="4"
+                                          class="form-control premium-input">{{ old('address') }}</textarea>
+
+                                @error('address')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="mt-4">
+
+                    <a href="{{ route('users.index') }}"
+                       class="btn btn-light">
+                        Cancel
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Create User
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <div class="card premium-block">
+
+                    <div class="card-header premium-card-header">
+                        <div>
+                            <h4>Profile Photo</h4>
+                            <p class="header-subtext">
+                                Upload profile image.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="card-body text-center">
+
+                        <img src="{{ asset('assets/img/user.png') }}"
+                             class="rounded-circle mb-3"
+                             width="120"
+                             height="120">
+
+                        <input type="file"
+                               name="profile_photo"
+                               class="form-control premium-input">
+
+                        @error('profile_photo')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+
+                        <small class="text-muted mt-2 d-block">
+                            JPG, PNG, JPEG Supported
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-
-        <div class="mb-3">
-            <label>Email</label>
-
-            <input type="email"
-                   name="email"
-                   class="form-control">
-        </div>
-
-        <div class="mb-3">
-            <label>Role</label>
-
-            <select name="role" class="form-control">
-
-                <option value="owner">Owner</option>
-
-                <option value="branch_manager">Branch Manager</option>
-
-                <option value="waiter">Waiter</option>
-
-                <option value="chef">Chef</option>
-
-                <option value="cashier">Cashier</option>
-
-                <option value="customer">Customer</option>
-
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label>Password</label>
-
-            <input type="password"
-                   name="password"
-                   class="form-control">
-        </div>
-
-        <button class="btn btn-success">
-            Save User
-        </button>
 
     </form>
 
-</div>
+</section>
 
-</body>
-</html>
+@endsection
