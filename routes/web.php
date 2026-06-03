@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\UserWebController;
 use App\Http\Controllers\Admin\RoleWebController;
 use App\Http\Controllers\Admin\PermissionWebController;
 use App\Http\Controllers\Admin\BranchWebController;
+use App\Http\Controllers\Admin\CategoryWebController;
+
 /*
 |--------------------------------------------------------------------------
 | Guest Routes
@@ -55,6 +57,8 @@ Route::middleware('jwt.session')->group(function () {
     Route::resource('branches', BranchWebController::class);
     Route::get('/my-branches',[BranchWebController::class, 'myBranches'])->name('branches.my');
     Route::post('/branches/{branch}/assign-manager',[BranchWebController::class, 'assignManager'])->name('branches.assign-manager');
+    Route::resource('categories', CategoryWebController::class);
+    Route::get('/my-categories',[CategoryWebController::class, 'myCategories'])->name('categories.my');
     /*
     |--------------------------------------------------------------------------
     | Logout
