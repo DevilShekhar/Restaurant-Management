@@ -201,7 +201,8 @@
                               <i data-feather="monitor"></i><span>Dashboard</span>
                         </a>
                      </li>
-                     <li class="dropdown {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                     @can('manage-user')
+                        <li class="dropdown {{ request()->routeIs('users.*') ? 'active' : '' }}">
 
                            <a href="#" class="nav-link has-dropdown">
                               <i class="fas fa-users"></i>
@@ -225,7 +226,8 @@
                            </ul>
 
                         </li>
-
+                        @endcan
+                        @can('manage-role')
                         <li class="dropdown {{ request()->routeIs('roles.*') ? 'active' : '' }}">
 
                            <a href="#" class="nav-link has-dropdown">
@@ -246,7 +248,8 @@
                            </ul>
 
                         </li>
-
+                         @endcan
+                        @can('manage-permission')
                         <li class="dropdown {{ request()->routeIs('permissions.*') ? 'active' : '' }}">
 
                            <a href="#" class="nav-link has-dropdown">
@@ -271,11 +274,14 @@
                            </ul>
 
                         </li>
-                        <li>
-                           <a href="{{ route('branches.index') }}">
-                              Branches
-                           </a>
-                        </li>
+                         @endcan
+                        @can('view-branch')
+                              <li>
+                                 <a href="{{ route('branches.index') }}">
+                                    Branches
+                                 </a>
+                              </li>
+                           @endcan
                         <li>
                            <a href="{{ route('branches.my') }}">
                               My Branches

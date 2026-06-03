@@ -14,35 +14,34 @@ class UserController extends Controller
      * Display a listing of users.
      */
     public function index()
-    {
-        $authUser = auth()->user();
+{
+    $authUser = auth()->user();
 
-        $query = User::query();
+    $query = User::query();
 
-        if ($authUser->role == 'super_admin') {
+    if ($authUser->role == 'super_admin') {
 
-            // No filter - get all users
+        $query->where('role', 'owner');
 
-        } elseif ($authUser->role == 'owner') {
+    } elseif ($authUser->role == 'owner') {
 
-            $query->where('created_by', $authUser->id);
+        $query->where('created_by', $authUser->id);
 
-        } elseif ($authUser->role == 'branch_manager') {
+    } elseif ($authUser->role == 'branch_manager') {
 
-            $query->where('created_by', $authUser->id)
-                ->whereIn('role', [
-                    'waiter_head',
-                    'waiter',
-                    'cashier'
-                ]);
-        }
-
-        return response()->json([
-            'success' => true,
-            'data' => $query->paginate(20)
-        ]);
+        $query->where('created_by', $authUser->id)
+              ->whereIn('role', [
+                  'waiter_head',
+                  'waiter',
+                  'cashier'
+              ]);
     }
 
+    return response()->json([
+        'success' => true,
+        'data' => $query->latest()->paginate(20)
+    ]);
+}
     /**
      * Store a newly created user.
      */
@@ -64,6 +63,7 @@ class UserController extends Controller
         $profilePhoto = null;
 
         if ($request->hasFile('profile_photo')) {
+
             $profilePhoto = $request->file('profile_photo')
                 ->store('profiles', 'public');
         }
@@ -82,11 +82,15 @@ class UserController extends Controller
             'created_by'    => auth()->id(),
         ]);
 
+        // Remove old roles and assign new role
+        $user->syncRoles([$validated['role']]);
+
         return response()->json([
             'success' => true,
             'message' => 'User created successfully',
-            'data' => $user
+            'data' => $user->fresh()->load('roles')
         ], 201);
+
     }
 
     /**
@@ -138,14 +142,13 @@ class UserController extends Controller
 
         if ($request->hasFile('profile_photo')) {
 
-            // Delete old image
-            if ($user->profile_photo &&
-                Storage::disk('public')->exists($user->profile_photo)) {
-
+            if (
+                $user->profile_photo &&
+                Storage::disk('public')->exists($user->profile_photo)
+            ) {
                 Storage::disk('public')->delete($user->profile_photo);
             }
 
-            // Upload new image
             $profilePhoto = $request->file('profile_photo')
                 ->store('profiles', 'public');
 
@@ -156,10 +159,13 @@ class UserController extends Controller
 
         $user->update($validated);
 
+        // Remove old role and assign selected role
+        $user->syncRoles([$validated['role']]);
+
         return response()->json([
             'success' => true,
             'message' => 'User updated successfully',
-            'data' => $user->fresh()
+            'data' => $user->fresh()->load('roles')
         ], 200);
     }
 

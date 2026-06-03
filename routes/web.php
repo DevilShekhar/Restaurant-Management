@@ -29,7 +29,7 @@ Route::middleware('guest')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('jwt.session')->group(function () {
+Route::middleware(['jwt.session','role:super_admin,owner,branch_manager,waiter_head,waiter,chef,cashier,customer'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
