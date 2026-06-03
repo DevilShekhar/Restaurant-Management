@@ -129,7 +129,7 @@
                                                         class="btn btn-sm btn-primary mr-2">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-
+                                                    @can('delete-user')
                                                     <form action="{{ route('users.destroy',$user['id']) }}"
                                                         method="POST"
                                                         class="delete-form">
@@ -143,6 +143,7 @@
                                                         </button>
 
                                                     </form>
+                                                    @endcan
 
                                                 </div>
 
