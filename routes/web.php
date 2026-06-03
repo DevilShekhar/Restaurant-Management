@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\UserWebController;
 use App\Http\Controllers\Admin\RoleWebController;
 use App\Http\Controllers\Admin\PermissionWebController;
+use App\Http\Controllers\Admin\BranchWebController;
 /*
 |--------------------------------------------------------------------------
 | Guest Routes
@@ -51,6 +52,9 @@ Route::middleware('jwt.session')->group(function () {
     Route::resource('permissions', PermissionWebController::class);
     Route::get('/roles/{id}/permissions',[RoleWebController::class,'editPermissions'])->name('roles.permissions.edit');
     Route::post('/roles/{id}/permissions',[RoleWebController::class,'updatePermissions'])->name('roles.permissions.update');
+    Route::resource('branches', BranchWebController::class);
+    Route::get('/my-branches',[BranchWebController::class, 'myBranches'])->name('branches.my');
+    Route::post('/branches/{branch}/assign-manager',[BranchWebController::class, 'assignManager'])->name('branches.assign-manager');
     /*
     |--------------------------------------------------------------------------
     | Logout

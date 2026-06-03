@@ -271,6 +271,16 @@
                            </ul>
 
                         </li>
+                        <li>
+                           <a href="{{ route('branches.index') }}">
+                              Branches
+                           </a>
+                        </li>
+                        <li>
+                           <a href="{{ route('branches.my') }}">
+                              My Branches
+                           </a>
+                        </li>
                   </ul>
 
                 
