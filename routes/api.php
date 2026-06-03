@@ -8,6 +8,8 @@ use App\Http\Controllers\API\PermissionController;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\API\BranchController;
+use App\Http\Controllers\API\CategoryController;
+
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->name('api.')->group(function () {
@@ -23,4 +25,7 @@ Route::middleware('auth:api')->name('api.')->group(function () {
         Route::get('my-branches', [BranchController::class, 'myBranches']);
         Route::post('branches/{branch}/assign-manager',[BranchController::class, 'assignManager']);
         Route::get('/available-managers',[BranchController::class, 'availableManagers']);
+        Route::apiResource('categories',CategoryController::class);
+        Route::get('/my-categories',[CategoryController::class,'myCategories']);
+       
 });
