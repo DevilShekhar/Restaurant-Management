@@ -39,4 +39,8 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+    public function branches()
+    {
+        return $this->hasMany(Branch::class, 'owner_id');
+    }
 }

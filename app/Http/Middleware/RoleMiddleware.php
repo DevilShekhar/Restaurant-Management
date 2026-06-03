@@ -7,20 +7,16 @@ use Illuminate\Http\Request;
 
 class RoleMiddleware
 {
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        $user = auth('api')->user();
+        $user = session('user');
 
         if (!$user) {
-            return response()->json([
-                'message' => 'Unauthenticated'
-            ], 401);
+            return redirect('/login');
         }
 
-        if (!$user->hasRole($role)) {
-            return response()->json([
-                'message' => 'Forbidden'
-            ], 403);
+        if (!in_array($user['role'], $roles)) {
+            abort(403, 'Unauthorized');
         }
 
         return $next($request);
