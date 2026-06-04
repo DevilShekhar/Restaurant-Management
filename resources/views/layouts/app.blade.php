@@ -287,6 +287,11 @@
                               My Branches
                            </a>
                         </li>
+                        <li>
+                                 <a href="{{ route('categories.index') }}">
+                                    categories
+                                 </a>
+                              </li>
                   </ul>
 
                 
