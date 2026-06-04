@@ -25,7 +25,7 @@ Route::middleware('auth:api')->name('api.')->group(function () {
         Route::get('my-branches', [BranchController::class, 'myBranches']);
         Route::post('branches/{branch}/assign-manager',[BranchController::class, 'assignManager']);
         Route::get('/available-managers',[BranchController::class, 'availableManagers']);
+        Route::get('/categories/create',[CategoryController::class, 'create']);
         Route::apiResource('categories',CategoryController::class);
         Route::get('/my-categories',[CategoryController::class,'myCategories']);
-       
 });

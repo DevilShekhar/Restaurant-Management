@@ -13,17 +13,10 @@ use App\Http\Controllers\Admin\CategoryWebController;
 | Guest Routes
 |--------------------------------------------------------------------------
 */
-
 Route::middleware('guest')->group(function () {
-
-    Route::get('/login', function () {
-        return view('auth.login');
-    })->name('login');
-
-    Route::post('/login', [AuthController::class, 'webLogin'])
-        ->name('web.login');
+    Route::get('/login', function () {return view('auth.login');})->name('login');
+    Route::post('/login', [AuthController::class, 'webLogin'])->name('web.login');
 });
-
 
 /*
 |--------------------------------------------------------------------------
@@ -31,24 +24,19 @@ Route::middleware('guest')->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['jwt.session','role:super_admin,owner,branch_manager,waiter_head,waiter,chef,cashier,customer'])->group(function () {
+Route::middleware('jwt.session')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
     | Dashboard
     |--------------------------------------------------------------------------
     */
-
-    Route::get('/dashboard', [AuthController::class, 'dashboard'])
-        ->name('dashboard');
-
-
+    Route::get('/dashboard', [AuthController::class, 'dashboard']) ->name('dashboard');   
     /*
     |--------------------------------------------------------------------------
-    | User Management
+    | After Auth
     |--------------------------------------------------------------------------
     */
-
     Route::resource('users', UserWebController::class);
     Route::resource('roles', RoleWebController::class);
     Route::resource('permissions', PermissionWebController::class);
@@ -64,9 +52,7 @@ Route::middleware(['jwt.session','role:super_admin,owner,branch_manager,waiter_h
     | Logout
     |--------------------------------------------------------------------------
     */
-
-    Route::post('/logout', [AuthController::class, 'logout'])
-        ->name('logout');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 
