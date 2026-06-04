@@ -275,23 +275,56 @@
 
                         </li>
                          @endcan
-                        @can('view-branch')
-                              <li>
-                                 <a href="{{ route('branches.index') }}">
-                                    Branches
-                                 </a>
-                              </li>
-                           @endcan
-                        <li>
-                           <a href="{{ route('branches.my') }}">
-                              My Branches
+                        <li class="dropdown {{ request()->routeIs('branches.*') ? 'active' : '' }}">
+
+                           <a href="#" class="nav-link has-dropdown">
+                              <i class="fas fa-code-branch"></i>
+                              <span>Branch Management</span>
                            </a>
-                        </li>
-                        <li>
-                                 <a href="{{ route('categories.index') }}">
-                                    categories
-                                 </a>
+
+                           <ul class="dropdown-menu">
+                              @can('view-branch')
+                                 <li class="{{ request()->routeIs('branches.index') ? 'active' : '' }}">
+                                       <a class="nav-link" href="{{ route('branches.index') }}">
+                                          Branches
+                                       </a>
+                                 </li>
+                               @endcan
+
+                              <li class="{{ request()->routeIs('branches.my') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('branches.my') }}">
+                                       My Branches
+                                    </a>
                               </li>
+
+                           </ul>
+
+                        </li>
+                       
+                        <li class="dropdown {{ request()->routeIs('categories.*') ? 'active' : '' }}">
+
+                           <a href="#" class="nav-link has-dropdown">
+                              <i class="fas fa-tags"></i>
+                              <span>Category Management</span>
+                           </a>
+
+                           <ul class="dropdown-menu">
+
+                              <li class="{{ request()->routeIs('categories.index') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('categories.index') }}">
+                                       Categories
+                                    </a>
+                              </li>
+
+                              <li class="{{ request()->routeIs('categories.my') ? 'active' : '' }}">
+                                    <a class="nav-link" href="{{ route('categories.my') }}">
+                                       My Categories
+                                    </a>
+                              </li>
+
+                           </ul>
+
+                        </li>
                   </ul>
 
                 
